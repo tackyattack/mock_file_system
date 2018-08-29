@@ -7,9 +7,11 @@
 //
 
 #include <iostream>
+#include "file_obj.h"
 
 int main(int argc, const char * argv[]) {
     // insert code here...
     std::cout << "Hello, World!\n";
+    file_obj m;
     return 0;
 }
