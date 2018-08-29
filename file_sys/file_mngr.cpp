@@ -81,26 +81,29 @@ void file_manager::insert_alpha_str(char *src, std::vector<char *> &dest)
         dest.insert(it, src);
     }
 }
-
+// todo: make it so it can print short version and long version using this
+//       same function. Just be able to select the mode -- should be almost
+//       all the same except the file log will now include the extra info.
+//       Keep the same alphabetical ordering based on name.
 void file_manager::list_cwd()
 {
     // list the files/directories in the current working dir
     // in alphabetical order
     
-    std::vector<char *> names;
+    std::vector<char *> file_logs;
     
-    names.push_back((cwd->get_subdirs())[0]->get_name());
+    file_logs.push_back((cwd->get_subdirs())[0]->get_name());
     for(int i = 1; i < (cwd->get_subdirs()).size(); i++)
     {
-        insert_alpha_str((cwd->get_subdirs())[i]->get_name(), names);
+        insert_alpha_str((cwd->get_subdirs())[i]->get_name(), file_logs);
     }
     for(int i = 0; i < (cwd->get_files()).size(); i++)
     {
-        insert_alpha_str((cwd->get_files())[i]->get_name(), names);
+        insert_alpha_str((cwd->get_files())[i]->get_name(), file_logs);
     }
     
-    for(int i = 0; i < names.size(); i++)
+    for(int i = 0; i < file_logs.size(); i++)
     {
-        printf("%s\n", names[i]);
+        printf("%s\n", file_logs[i]);
     }
 }

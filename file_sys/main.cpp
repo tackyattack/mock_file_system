@@ -8,22 +8,15 @@
 #include <stdio.h>
 #include <iostream>
 #include "dir.h"
+#include "file_mngr.h"
+
+// todo: add destructors
+// todo: make the file manager create directors with "name/"
 
 int main(int argc, const char * argv[]) {
     
-    file my_file;
-    my_file.chmod(761);
-    printf("%s", my_file.get_permissions_str());
-    while(1);
-    
-    directory m;
-    directory A;
-    A.set_name("Directory_A");
-    directory B;
-    m.add_subdir(&A);
-    m.add_subdir(&B);
-    directory out = *(m.get_subdirs().front());
-    char *x = out.get_name();
-    printf("%s\n", x);
+    file_manager fm;
+    fm.test();
+
     return 0;
 }
