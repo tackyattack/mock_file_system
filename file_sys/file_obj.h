@@ -13,8 +13,8 @@ class file_obj
 {
 public:
     void chmod(int perm);
-    void get_name();
-    void set_name();
+    char *get_name();
+    void set_name(const char *f_name);
     char *get_permissions_str();
 private:
     char type;
@@ -25,6 +25,8 @@ private:
     int byte_size;
     char *date;
     char *name;
+    
+    void dec_to_p(char dec, char *out_p);
 };
 
 #endif /* file_obj_h */

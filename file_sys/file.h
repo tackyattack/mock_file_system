@@ -8,8 +8,9 @@
 
 #ifndef file_h
 #define file_h
+#include "file_obj.h"
 
-class file
+class file: public file_obj
 {
     
 };
