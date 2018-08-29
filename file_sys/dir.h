@@ -16,10 +16,11 @@ class directory: public file_obj
 {
 public:
     std::vector<directory *> get_subdirs();
+    std::vector<file *> get_files();
     void add_subdir(directory *dir);
 private:
     std::vector<directory *> subdirs;
-    std::vector<file *> files;
+    std::vector<file *> dir_files;
 };
 
 #endif /* dir_h */

@@ -13,6 +13,11 @@ std::vector<directory *> directory::get_subdirs()
     return subdirs;
 }
 
+std::vector<file *> directory::get_files()
+{
+    return dir_files;
+}
+
 void directory::add_subdir(directory *dir)
 {
     subdirs.push_back(dir);
