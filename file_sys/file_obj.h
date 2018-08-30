@@ -13,9 +13,15 @@ class file_obj
 {
 public:
     void chmod(int perm);
+    char get_type();
     char *get_name();
     void set_name(const char *f_name);
     char *get_permissions_str();
+    int get_links();
+    char *get_user();
+    char *get_group();
+    int get_byte_size();
+    char *get_date();
 private:
     char type;
     char permissions[9];

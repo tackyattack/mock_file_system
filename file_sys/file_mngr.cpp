@@ -102,8 +102,25 @@ void file_manager::list_cwd(bool long_mode)
         insert_alpha_file(*(cwd->get_files())[i], file_logs);
     }
     
-    for(int i = 0; i < file_logs.size(); i++)
+    if(long_mode)
     {
-        printf("%s\n", file_logs[i]->get_name());
+        for(int i = 0; i < file_logs.size(); i++)
+        {
+            printf("%s\n", file_logs[i]->get_name());
+        }
+    }
+    else
+    {
+        for(int i = 0; i < file_logs.size(); i++)
+        {
+            printf("%c%s\t%d\t%s\t%s\t%d\t%s\t%s\n", file_logs[i]->get_type(),
+                                    file_logs[i]->get_permissions_str(),
+                                    file_logs[i]->get_links(),
+                                    file_logs[i]->get_user(),
+                                    file_logs[i]->get_group(),
+                                    file_logs[i]->get_byte_size(),
+                                    file_logs[i]->get_date(),
+                                    file_logs[i]->get_name());
+        }
     }
 }

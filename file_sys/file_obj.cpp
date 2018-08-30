@@ -15,6 +15,11 @@ char* file_obj::get_permissions_str()
     return permissions;
 }
 
+char file_obj::get_type()
+{
+    return type;
+}
+
 void file_obj::set_name(const char *f_name)
 {
     name = new char[strlen(f_name)];
@@ -24,6 +29,31 @@ void file_obj::set_name(const char *f_name)
 char* file_obj::get_name()
 {
     return name;
+}
+
+int file_obj::get_links()
+{
+    return links;
+}
+
+char* file_obj::get_user()
+{
+    return user;
+}
+
+char* file_obj::get_group()
+{
+    return group;
+}
+
+int file_obj::get_byte_size()
+{
+    return byte_size;
+}
+
+char* file_obj::get_date()
+{
+    return date;
 }
 
 void file_obj::dec_to_p(char dec, char *out_p)
