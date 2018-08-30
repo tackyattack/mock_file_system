@@ -11,6 +11,7 @@
 
 #include "file.h"
 #include "dir.h"
+#include "file_obj.h"
 
 class file_manager
 {
@@ -22,8 +23,8 @@ private:
     directory *cwd;
     void mkdir(const char *name);
     void change_directory(char *dir_name);
-    void list_cwd();
-    void insert_alpha_str(char *src, std::vector<char *> &dest);
+    void list_cwd(bool long_mode);
+    void insert_alpha_file(file_obj &f, std::vector<file_obj *> &dest);
 };
 
 #endif /* file_mngr_h */

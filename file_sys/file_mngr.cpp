@@ -20,7 +20,7 @@ void file_manager::test()
     mkdir("z");
     mkdir("c");
     
-    list_cwd();
+    list_cwd(false);
 }
 
 file_manager::file_manager()
@@ -60,17 +60,17 @@ void file_manager::change_directory(char *dir_name)
     }
 }
 
-void file_manager::insert_alpha_str(char *src, std::vector<char *> &dest)
+void file_manager::insert_alpha_file(file_obj &f, std::vector<file_obj *> &dest)
 {
     // alphabetical insert based on first character
-    std::vector<char *>::iterator it = dest.begin();
+    std::vector<file_obj *>::iterator it = dest.begin();
     bool found_place = false;
     for(int i = 0; i < dest.size() && !found_place; i++)
     {
-        if(src[0] <= dest[i][0])
+        if(f.get_name()[0] <= dest[i]->get_name()[0])
         {
              it = it + i;
-            dest.insert(it, src);
+            dest.insert(it, &f);
             found_place = true;
         }
     }
@@ -78,32 +78,32 @@ void file_manager::insert_alpha_str(char *src, std::vector<char *> &dest)
     {
         // couldn't find a spot, so just insert at the end
         it = it + dest.size();
-        dest.insert(it, src);
+        dest.insert(it, &f);
     }
 }
 // todo: make it so it can print short version and long version using this
 //       same function. Just be able to select the mode -- should be almost
 //       all the same except the file log will now include the extra info.
 //       Keep the same alphabetical ordering based on name.
-void file_manager::list_cwd()
+void file_manager::list_cwd(bool long_mode)
 {
     // list the files/directories in the current working dir
     // in alphabetical order
     
-    std::vector<char *> file_logs;
+    std::vector<file_obj *> file_logs;
     
-    file_logs.push_back((cwd->get_subdirs())[0]->get_name());
+    file_logs.push_back((cwd->get_subdirs())[0]);
     for(int i = 1; i < (cwd->get_subdirs()).size(); i++)
     {
-        insert_alpha_str((cwd->get_subdirs())[i]->get_name(), file_logs);
+        insert_alpha_file(*(cwd->get_subdirs())[i], file_logs);
     }
     for(int i = 0; i < (cwd->get_files()).size(); i++)
     {
-        insert_alpha_str((cwd->get_files())[i]->get_name(), file_logs);
+        insert_alpha_file(*(cwd->get_files())[i], file_logs);
     }
     
     for(int i = 0; i < file_logs.size(); i++)
     {
-        printf("%s\n", file_logs[i]);
+        printf("%s\n", file_logs[i]->get_name());
     }
 }
