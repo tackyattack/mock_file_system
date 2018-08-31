@@ -12,6 +12,9 @@
 
 class file: public file_obj
 {
+public:
+    file();
+private:
     
 };
 

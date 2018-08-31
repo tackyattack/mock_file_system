@@ -12,25 +12,32 @@
 class file_obj
 {
 public:
+    file_obj();
     void chmod(int perm);
     char get_type();
+    void set_type(bool is_dir);
     char *get_name();
     void set_name(const char *f_name);
     char *get_permissions_str();
     int get_links();
+    void set_links(int link_cnt);
     char *get_user();
+    void set_user(const char *usr);
     char *get_group();
+    void set_group(const char *grp);
     int get_byte_size();
+    void set_byte_size(int sz);
     char *get_date();
+    void set_date(const char *dt);
 private:
     char type;
     char permissions[9];
     int links;
-    char *user;
-    char *group;
+    char *user = NULL;
+    char *group = NULL;
     int byte_size;
-    char *date;
-    char *name;
+    char *date = NULL;
+    char *name = NULL;
     
     void dec_to_p(char dec, char *out_p);
 };

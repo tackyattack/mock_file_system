@@ -15,6 +15,7 @@
 class directory: public file_obj
 {
 public:
+    directory();
     std::vector<directory *> get_subdirs();
     std::vector<file *> get_files();
     void add_subdir(directory *dir);

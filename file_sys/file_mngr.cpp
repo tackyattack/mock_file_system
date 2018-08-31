@@ -14,13 +14,14 @@
 void file_manager::test()
 {
     mkdir("x");
+    cwd->chmod(777);
     mkdir("a");
     mkdir("y");
     mkdir("c");
     mkdir("z");
     mkdir("c");
     
-    list_cwd(false);
+    list_cwd(true);
 }
 
 file_manager::file_manager()
@@ -36,6 +37,7 @@ void file_manager::mkdir(const char *name)
     directory *new_dir = new directory;
     new_dir->set_name(name);
     cwd->add_subdir(new_dir);
+    cwd->set_links(cwd->get_links()+1);
 }
 
 void file_manager::change_directory(char *dir_name)
@@ -102,7 +104,7 @@ void file_manager::list_cwd(bool long_mode)
         insert_alpha_file(*(cwd->get_files())[i], file_logs);
     }
     
-    if(long_mode)
+    if(!long_mode)
     {
         for(int i = 0; i < file_logs.size(); i++)
         {
@@ -113,7 +115,7 @@ void file_manager::list_cwd(bool long_mode)
     {
         for(int i = 0; i < file_logs.size(); i++)
         {
-            printf("%c%s\t%d\t%s\t%s\t%d\t%s\t%s\n", file_logs[i]->get_type(),
+            printf("%c%s %10d %10s %10s %10d %10s %10s\n", file_logs[i]->get_type(),
                                     file_logs[i]->get_permissions_str(),
                                     file_logs[i]->get_links(),
                                     file_logs[i]->get_user(),

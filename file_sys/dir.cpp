@@ -8,6 +8,14 @@
 #include <stdio.h>
 #include "dir.h"
 
+directory::directory()
+{
+    chmod(777);
+    set_type(true);
+    set_user("mike");
+    set_group("faculty");
+}
+
 std::vector<directory *> directory::get_subdirs()
 {
     return subdirs;
@@ -21,4 +29,14 @@ std::vector<file *> directory::get_files()
 void directory::add_subdir(directory *dir)
 {
     subdirs.push_back(dir);
+    //set_links(get_links() + 1); probably won't work since the
+    // number of links goes all the way down to the last folder
+    // NOPE! nvm, it looks like links are the number of files (dir or actual
+    // files) in a subfolder.
+    // Therefore, maybe then you could call touch on the directory you
+    // are in, which would be here so that the links could be update?
+    // or, actually, maybe the link increase should go in the file
+    // manager. That way, whenever you call mkdir or touch, or rm file,
+    // the link for the current working directory gets updated correctly.
+    // Yeah that's probably how it should work.
 }
