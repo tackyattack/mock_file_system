@@ -15,4 +15,5 @@ file::file()
     set_type(false);
     set_user("henry");
     set_group("students");
+    update_file_date();
 }

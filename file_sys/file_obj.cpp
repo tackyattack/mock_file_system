@@ -129,7 +129,14 @@ void file_obj::get_current_date(char *date_out, int sz)
 {
     std::time_t t = std::time(0);
     std::tm const* tm = std::localtime(&t);
-    strftime(date_out, sz, "%b %d %Y %H:%S", tm);
+    strftime(date_out, sz, "%b %d %Y %H:%M", tm);
+}
+
+void file_obj::update_file_date()
+{
+    char dt[30] = {0};
+    get_current_date(dt, 30);
+    set_date(dt);
 }
 
 void file_obj::dec_to_p(char dec, char *out_p)

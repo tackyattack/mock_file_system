@@ -30,6 +30,7 @@ public:
     char *get_date();
     void set_date(const char *dt);
     void get_current_date(char *date_out, int sz);
+    void update_file_date();
 private:
     char type;
     char permissions[9];

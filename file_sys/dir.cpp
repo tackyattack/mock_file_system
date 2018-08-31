@@ -14,6 +14,7 @@ directory::directory()
     set_type(true);
     set_user("mike");
     set_group("faculty");
+    update_file_date();
 }
 
 std::vector<directory *> directory::get_subdirs()
