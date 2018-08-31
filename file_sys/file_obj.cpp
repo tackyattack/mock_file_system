@@ -19,6 +19,11 @@ file_obj::file_obj()
     set_date("Jan 1 00:00");
 }
 
+file_obj::~file_obj()
+{
+    
+}
+
 char* file_obj::get_permissions_str()
 {
     return permissions;

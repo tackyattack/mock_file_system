@@ -22,6 +22,9 @@ private:
     directory root;
     directory *cwd;
     void mkdir(const char *name);
+    void rmdir(const char *name);
+    void touch(const char *name);
+    void rmf(const char *name);
     void change_directory(char *dir_name);
     void list_cwd(bool long_mode);
     void insert_alpha_file(file_obj &f, std::vector<file_obj *> &dest);

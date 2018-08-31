@@ -40,6 +40,44 @@ void file_manager::mkdir(const char *name)
     cwd->set_links(cwd->get_links()+1);
 }
 
+void file_manager::rmdir(const char *name)
+{
+    std::vector<directory *> subdirs = cwd->get_subdirs();
+    for(int i = 0; i < subdirs.size(); i++)
+    {
+        if(strcmp(subdirs[i]->get_name(), name))
+        {
+            file_obj *f = subdirs[i];
+            subdirs.erase(subdirs.begin() + i);
+            delete f;
+        }
+    }
+    cwd->set_links(cwd->get_links()-1);
+}
+
+void file_manager::touch(const char *name)
+{
+    file *new_file = new file;
+    new_file->set_name(name);
+    cwd->add_file(new_file);
+    cwd->set_links(cwd->get_links()+1);
+}
+
+void file_manager::rmf(const char *name)
+{
+    std::vector<file *> files = cwd->get_files();
+    for(int i = 0; i < files.size(); i++)
+    {
+        if(strcmp(files[i]->get_name(), name))
+        {
+            file_obj *f = files[i];
+            files.erase(files.begin() + i);
+            delete f;
+        }
+    }
+    cwd->set_links(cwd->get_links()-1);
+}
+
 void file_manager::change_directory(char *dir_name)
 {
     // change the current working directory

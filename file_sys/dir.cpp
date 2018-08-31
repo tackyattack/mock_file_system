@@ -22,11 +22,6 @@ std::vector<directory *> directory::get_subdirs()
     return subdirs;
 }
 
-std::vector<file *> directory::get_files()
-{
-    return dir_files;
-}
-
 void directory::add_subdir(directory *dir)
 {
     subdirs.push_back(dir);
@@ -40,4 +35,26 @@ void directory::add_subdir(directory *dir)
     // manager. That way, whenever you call mkdir or touch, or rm file,
     // the link for the current working directory gets updated correctly.
     // Yeah that's probably how it should work.
+}
+
+void directory::remove_subdir(directory *dir)
+{
+    for(int i = 0; i < subdirs.size(); i++)
+    {
+        if(subdirs[i] == dir)
+        {
+            subdirs.erase (subdirs.begin()+i);
+            break;
+        }
+    }
+}
+
+std::vector<file *> directory::get_files()
+{
+    return dir_files;
+}
+
+void directory::add_file(file *f)
+{
+    dir_files.push_back(f);
 }

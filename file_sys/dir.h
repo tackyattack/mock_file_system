@@ -19,6 +19,8 @@ public:
     std::vector<directory *> get_subdirs();
     std::vector<file *> get_files();
     void add_subdir(directory *dir);
+    void remove_subdir(directory *dir);
+    void add_file(file *f);
 private:
     std::vector<directory *> subdirs;
     std::vector<file *> dir_files;

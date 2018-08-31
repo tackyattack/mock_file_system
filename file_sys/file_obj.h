@@ -13,6 +13,7 @@ class file_obj
 {
 public:
     file_obj();
+    virtual ~file_obj();
     void chmod(int perm);
     char get_type();
     void set_type(bool is_dir);
