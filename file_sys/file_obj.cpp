@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <iostream>
 #include "file_obj.h"
 
 file_obj::file_obj()
@@ -122,6 +123,13 @@ void file_obj::set_date(const char *dt)
     }
     date = new char[strlen(dt)];
     strcpy(date, dt);
+}
+
+void file_obj::get_current_date(char *date_out, int sz)
+{
+    std::time_t t = std::time(0);
+    std::tm const* tm = std::localtime(&t);
+    strftime(date_out, sz, "%b %d %Y %H:%S", tm);
 }
 
 void file_obj::dec_to_p(char dec, char *out_p)
