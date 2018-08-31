@@ -17,6 +17,11 @@ directory::directory()
     update_file_date();
 }
 
+directory* directory::get_parent_dir()
+{
+    return parent;
+}
+
 std::vector<directory *> directory::get_subdirs()
 {
     return subdirs;
@@ -24,6 +29,7 @@ std::vector<directory *> directory::get_subdirs()
 
 void directory::add_subdir(directory *dir)
 {
+    dir->parent = this;
     subdirs.push_back(dir);
     //set_links(get_links() + 1); probably won't work since the
     // number of links goes all the way down to the last folder

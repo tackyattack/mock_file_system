@@ -21,9 +21,11 @@ public:
     void add_subdir(directory *dir);
     void remove_subdir(directory *dir);
     void add_file(file *f);
+    directory* get_parent_dir();
 private:
     std::vector<directory *> subdirs;
     std::vector<file *> dir_files;
+    directory *parent = NULL;
 };
 
 #endif /* dir_h */

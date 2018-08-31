@@ -11,6 +11,10 @@
 #include <iostream>
 #include "file_mngr.h"
 
+// TODO: make function to check if file exists (dir or file)
+//       if exists and mkdir, don't do it
+//       if exists and touch, just update date
+
 void file_manager::test()
 {
     mkdir("x/");
@@ -24,12 +28,28 @@ void file_manager::test()
     touch("hello_world");
     
     list_cwd(true);
+    print_cwd_path();
 }
 
 file_manager::file_manager()
 {
     root.set_name("/");
     cwd = &root;
+}
+
+void file_manager::print_cwd_path()
+{
+    std::vector<char *> path;
+    directory *current = cwd;
+    while(current != NULL)
+    {
+        path.push_back(current->get_name());
+        current = current->get_parent_dir();
+    }
+    for(long i = path.size()-1; i > -1; i--)
+    {
+        printf("%s", path[i]);
+    }
 }
 
 void file_manager::mkdir(const char *name)
