@@ -14,14 +14,17 @@
 
 file_obj::file_obj()
 {
-    links = 0;
+    links = 1;
     set_byte_size(rand()%50000);
     set_date("Jan 1 00:00");
 }
 
 file_obj::~file_obj()
 {
-    
+    delete[] user;
+    delete[] group;
+    delete[] date;
+    delete[] name;
 }
 
 char* file_obj::get_permissions_str()
@@ -174,4 +177,5 @@ void file_obj::chmod(int perm)
     dec_to_p(owner, permissions);
     dec_to_p(group, permissions+3);
     dec_to_p(pub, permissions+6);
+    permissions[9] = '\0';
 }

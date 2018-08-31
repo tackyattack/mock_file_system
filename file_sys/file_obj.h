@@ -34,7 +34,7 @@ public:
     void update_file_date();
 private:
     char type;
-    char permissions[9];
+    char permissions[10];
     int links;
     char *user = NULL;
     char *group = NULL;

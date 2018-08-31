@@ -13,13 +13,15 @@
 
 void file_manager::test()
 {
-    mkdir("x");
+    mkdir("x/");
     cwd->chmod(777);
-    mkdir("a");
-    mkdir("y");
-    mkdir("c");
-    mkdir("z");
-    mkdir("c");
+    mkdir("a/");
+    mkdir("y/");
+    mkdir("c/");
+    mkdir("z/");
+    mkdir("c/");
+    
+    touch("hello_world");
     
     list_cwd(true);
 }
@@ -153,7 +155,7 @@ void file_manager::list_cwd(bool long_mode)
     {
         for(int i = 0; i < file_logs.size(); i++)
         {
-            printf("%c%s %10d %10s %10s %10d %10s %10s\n", file_logs[i]->get_type(),
+            printf("%c%s %10d %10s %10s %10d %10s %20s\n", file_logs[i]->get_type(),
                                     file_logs[i]->get_permissions_str(),
                                     file_logs[i]->get_links(),
                                     file_logs[i]->get_user(),
