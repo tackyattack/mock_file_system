@@ -11,7 +11,6 @@
 #include "file_mngr.h"
 
 // todo: add destructors
-// todo: make the file manager create directors with "name/"
 
 int main(int argc, const char * argv[]) {
     

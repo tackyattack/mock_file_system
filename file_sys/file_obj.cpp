@@ -56,7 +56,7 @@ void file_obj::set_name(const char *f_name)
         delete[] name;
         name = NULL;
     }
-    name = new char[strlen(f_name)];
+    name = new char[strlen(f_name)+1];
     strcpy(name, f_name);
 }
 
@@ -87,7 +87,7 @@ void file_obj::set_user(const char *usr)
         delete[] user;
         user = NULL;
     }
-    user = new char[strlen(usr)];
+    user = new char[strlen(usr)+1];
     strcpy(user, usr);
 }
 
@@ -103,7 +103,7 @@ void file_obj::set_group(const char *grp)
         delete[] group;
         group = NULL;
     }
-    group = new char[strlen(grp)];
+    group = new char[strlen(grp)+1];
     strcpy(group, grp);
 }
 
@@ -129,7 +129,7 @@ void file_obj::set_date(const char *dt)
         delete[] date;
         date = NULL;
     }
-    date = new char[strlen(dt)];
+    date = new char[strlen(dt)+1];
     strcpy(date, dt);
 }
 

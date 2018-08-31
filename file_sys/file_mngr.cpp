@@ -17,13 +17,13 @@
 
 void file_manager::test()
 {
-    mkdir("x/");
+    mkdir("x");
     cwd->chmod(777);
-    mkdir("a/");
-    mkdir("y/");
-    mkdir("c/");
-    mkdir("z/");
-    mkdir("c/");
+    mkdir("a");
+    mkdir("y");
+    mkdir("c");
+    mkdir("z");
+    mkdir("c");
     
     touch("hello_world");
     
@@ -56,10 +56,15 @@ void file_manager::mkdir(const char *name)
 {
     // make a new dir (in current working dir) with the given name
     
+    char *name_with_slash = new char[strlen(name)+2];
+    strcpy(name_with_slash, name);
+    strcat(name_with_slash, "/");
+    
     directory *new_dir = new directory;
-    new_dir->set_name(name);
+    new_dir->set_name(name_with_slash);
     cwd->add_subdir(new_dir);
     cwd->set_links(cwd->get_links()+1);
+    delete[] name_with_slash;
 }
 
 void file_manager::rmdir(const char *name)
