@@ -17,6 +17,7 @@
 
 void file_manager::test()
 {
+    
     mkdir("x");
     cwd->chmod(777);
     mkdir("a");
@@ -27,8 +28,11 @@ void file_manager::test()
     
     touch("hello_world");
     
-    list_cwd(true);
+    //list_cwd(true);
     print_cwd_path();
+    change_directory_search("a/");
+    print_cwd_path();
+    
 }
 
 file_manager::file_manager()
@@ -50,6 +54,7 @@ void file_manager::print_cwd_path()
     {
         printf("%s", path[i]);
     }
+    printf("\n");
 }
 
 void file_manager::mkdir(const char *name)
@@ -127,6 +132,46 @@ void file_manager::change_directory(char *dir_name)
     }
 }
 
+void file_manager::split_path(const char *path, std::vector<const char *> &dirs, std::vector<int> &lengths)
+{
+    // split the path string into individual directory names.
+    // the lengths variable indicates the length of each directory name
+    int j = 0;
+    for(int i = 0; i < strlen(path); i++)
+    {
+        if(path[i] == '/')
+        {
+            i++;
+            dirs.push_back(path+j);
+            lengths.push_back(i-j);
+            j=i;
+        }
+    }
+}
+
+bool file_manager::change_directory_search(const char *path)
+{
+    directory *current_dir = cwd;
+    std::vector<const char *> dirs;
+    std::vector<int> lengths;
+    split_path(path, dirs, lengths);
+    for(int i = 0; i < dirs.size(); i++)
+    {
+        char *dir_name = new char[lengths[i] + 1];
+        strncpy(dir_name, dirs[i], lengths[i]);
+        dir_name[lengths[i]] = '\0';
+        current_dir = current_dir->search_for_dir(dir_name);
+        if(current_dir == NULL)
+        {
+            return false;
+        }
+        delete[] dir_name;
+    }
+    
+    cwd = current_dir;
+    return true;
+}
+
 void file_manager::insert_alpha_file(file_obj &f, std::vector<file_obj *> &dest)
 {
     // alphabetical insert based on first character
@@ -148,14 +193,12 @@ void file_manager::insert_alpha_file(file_obj &f, std::vector<file_obj *> &dest)
         dest.insert(it, &f);
     }
 }
-// todo: make it so it can print short version and long version using this
-//       same function. Just be able to select the mode -- should be almost
-//       all the same except the file log will now include the extra info.
-//       Keep the same alphabetical ordering based on name.
+
 void file_manager::list_cwd(bool long_mode)
 {
     // list the files/directories in the current working dir
-    // in alphabetical order
+    // in alphabetical order.
+    // The long mode indicates that all information should be printed.
     
     std::vector<file_obj *> file_logs;
     

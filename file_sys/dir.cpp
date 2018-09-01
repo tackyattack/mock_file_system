@@ -17,6 +17,18 @@ directory::directory()
     update_file_date();
 }
 
+directory* directory::search_for_dir(const char *name)
+{
+    for(int i = 0; i < subdirs.size(); i++)
+    {
+        if(strcmp(name, subdirs[i]->get_name()) == 0)
+        {
+            return subdirs[i];
+        }
+    }
+    return NULL;
+}
+
 directory* directory::get_parent_dir()
 {
     return parent;
