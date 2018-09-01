@@ -27,6 +27,7 @@ private:
     void rmf(const char *name);
     void change_directory(char *dir_name);
     bool change_directory_search(const char *path);
+    void change_to_parent_dir();
     void list_cwd(bool long_mode);
     void print_cwd_path();
     void insert_alpha_file(file_obj &f, std::vector<file_obj *> &dest);

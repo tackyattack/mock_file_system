@@ -29,8 +29,18 @@ void file_manager::test()
     touch("hello_world");
     
     //list_cwd(true);
+    mkdir("home");
     print_cwd_path();
-    change_directory_search("a/");
+    change_directory_search("home/");
+    print_cwd_path();
+    mkdir("henry");
+    change_directory_search("henry/");
+    print_cwd_path();
+    change_to_parent_dir();
+    print_cwd_path();
+    change_to_parent_dir();
+    print_cwd_path();
+    change_to_parent_dir();
     print_cwd_path();
     
 }
@@ -110,9 +120,17 @@ void file_manager::rmf(const char *name)
     cwd->set_links(cwd->get_links()-1);
 }
 
+void file_manager::change_to_parent_dir()
+{
+    if(cwd->get_parent_dir() != NULL)
+    {
+        cwd = cwd->get_parent_dir();
+    }
+}
+
 void file_manager::change_directory(char *dir_name)
 {
-    // change the current working directory
+    // change the current working directory (single level based on directory name)
     
     bool found = false;
     for(int i = 0; i < (cwd->get_subdirs()).size(); i++)
@@ -163,6 +181,7 @@ bool file_manager::change_directory_search(const char *path)
         current_dir = current_dir->search_for_dir(dir_name);
         if(current_dir == NULL)
         {
+            printf("path does not exist\n");
             return false;
         }
         delete[] dir_name;
