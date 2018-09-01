@@ -18,13 +18,13 @@
 void file_manager::test()
 {
     
-    mkdir("x");
-    cwd->chmod(777);
-    mkdir("a");
-    mkdir("y");
-    mkdir("c");
-    mkdir("z");
-    mkdir("c");
+//    mkdir("x");
+//    cwd->chmod(777);
+//    mkdir("a");
+//    mkdir("y");
+//    mkdir("c");
+//    mkdir("z");
+//    mkdir("c");
     
     touch("hello_world");
     
@@ -42,6 +42,9 @@ void file_manager::test()
     print_cwd_path();
     change_to_parent_dir();
     print_cwd_path();
+    list_cwd(false);
+    
+    rmdir("home/");
     
 }
 
@@ -49,6 +52,11 @@ file_manager::file_manager()
 {
     root.set_name("/");
     cwd = &root;
+}
+
+void file_manager::end()
+{
+    
 }
 
 void file_manager::print_cwd_path()
@@ -82,15 +90,40 @@ void file_manager::mkdir(const char *name)
     delete[] name_with_slash;
 }
 
+void file_manager::recursive_rm_dir(directory *dir)
+{
+    if(dir->get_subdirs().size() > 0)
+    {
+        for(int i = 0; i < dir->get_subdirs().size(); i++)
+        {
+            recursive_rm_dir(dir->get_subdirs()[i]);
+        }
+    }
+    
+    for(int i = 0; i < dir->get_files().size(); i++)
+    {
+        file_obj *fd = dir->get_files()[i];
+        delete fd;
+    }
+    
+    for(int i = 0; i < dir->get_subdirs().size(); i++)
+    {
+        file_obj *ff = dir->get_subdirs()[i];
+        delete ff;
+    }
+}
+
 void file_manager::rmdir(const char *name)
 {
     std::vector<directory *> subdirs = cwd->get_subdirs();
     for(int i = 0; i < subdirs.size(); i++)
     {
-        if(strcmp(subdirs[i]->get_name(), name))
+        if(strcmp(subdirs[i]->get_name(), name) == 0)
         {
-            file_obj *f = subdirs[i];
+            directory *dir = subdirs[i];
             subdirs.erase(subdirs.begin() + i);
+            recursive_rm_dir(dir);
+            file_obj *f = dir;
             delete f;
         }
     }

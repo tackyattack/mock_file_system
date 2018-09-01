@@ -32,6 +32,8 @@ private:
     void print_cwd_path();
     void insert_alpha_file(file_obj &f, std::vector<file_obj *> &dest);
     void split_path(const char *path, std::vector<const char *> &dirs, std::vector<int> &lengths);
+    void recursive_rm_dir(directory *dir);
+    void end();
 };
 
 #endif /* file_mngr_h */

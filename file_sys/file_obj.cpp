@@ -21,10 +21,11 @@ file_obj::file_obj()
 
 file_obj::~file_obj()
 {
-    delete[] user;
-    delete[] group;
-    delete[] date;
-    delete[] name;
+    printf("deallocating %s\n", name);
+    if(user != NULL) delete[] user;
+    if(group != NULL) delete[] group;
+    if(date != NULL)delete[] date;
+    if(name != NULL)delete[] name;
 }
 
 char* file_obj::get_permissions_str()

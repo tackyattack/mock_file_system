@@ -7,3 +7,6 @@
 //
 
 #include <stdio.h>
+
+// should also have a clean up function to make sure the arguments are in the correct format.
+// for example: <cd home> should send in "home/" for the path.
