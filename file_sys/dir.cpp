@@ -19,11 +19,29 @@ directory::directory()
 
 directory* directory::search_for_dir(const char *name)
 {
+    char *name_with_slash = new char[strlen(name)+2];
+    strcpy(name_with_slash, name);
+    strcat(name_with_slash, "/");
+    
     for(int i = 0; i < subdirs.size(); i++)
     {
-        if(strcmp(name, subdirs[i]->get_name()) == 0)
+        if(strcmp(name_with_slash, subdirs[i]->get_name()) == 0)
         {
+            delete[] name_with_slash;
             return subdirs[i];
+        }
+    }
+    delete[] name_with_slash;
+    return NULL;
+}
+
+file* directory::search_for_file(const char *name)
+{
+    for(int i = 0; i < dir_files.size(); i++)
+    {
+        if(strcmp(name, dir_files[i]->get_name()) == 0)
+        {
+            return dir_files[i];
         }
     }
     return NULL;

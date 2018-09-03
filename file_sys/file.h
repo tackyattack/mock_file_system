@@ -15,6 +15,7 @@ class file: public file_obj
 public:
     file();
 private:
+    file* search_for_file(const char *name);
     
 };
 

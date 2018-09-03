@@ -18,9 +18,7 @@ class file_manager
 public:
     file_manager();
     void test(); // REMOVE
-private:
-    directory root;
-    directory *cwd;
+    void chmod(const char *name, int val);
     void mkdir(const char *name);
     void rmdir(const char *name);
     void touch(const char *name);
@@ -30,10 +28,13 @@ private:
     void change_to_parent_dir();
     void list_cwd(bool long_mode);
     void print_cwd_path();
+private:
+    directory root;
+    directory *cwd;
+    
     void insert_alpha_file(file_obj &f, std::vector<file_obj *> &dest);
     void split_path(const char *path, std::vector<const char *> &dirs, std::vector<int> &lengths);
     void recursive_rm_dir(directory *dir);
-    void end();
 };
 
 #endif /* file_mngr_h */

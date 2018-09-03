@@ -9,13 +9,21 @@
 #include <iostream>
 #include "dir.h"
 #include "file_mngr.h"
+#include "arg_parse.h"
 
-// todo: add destructors
-
-int main(int argc, const char * argv[]) {
-    
+int main()
+{
     file_manager fm;
-    fm.test();
+    arg_parser ap;
+    std::string arg;
+    bool quit = false;
+    
+    while(!quit)
+    {
+        getline(std::cin, arg);
+        const char *arg_c = arg.c_str();
+        ap.parse_arg(arg_c, &fm, quit);
+    }
 
     return 0;
 }

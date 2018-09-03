@@ -11,10 +11,6 @@
 #include <iostream>
 #include "file_mngr.h"
 
-// TODO: make function to check if file exists (dir or file)
-//       if exists and mkdir, don't do it
-//       if exists and touch, just update date
-
 void file_manager::test()
 {
     
@@ -32,6 +28,7 @@ void file_manager::test()
     mkdir("home");
     print_cwd_path();
     change_directory_search("home/");
+    touch("file_in_home");
     print_cwd_path();
     mkdir("henry");
     change_directory_search("henry/");
@@ -54,9 +51,25 @@ file_manager::file_manager()
     cwd = &root;
 }
 
-void file_manager::end()
+void file_manager::chmod(const char *name, int val)
 {
-    
+    file *f = cwd->search_for_file(name);
+    if(f != NULL)
+    {
+        f->chmod(val);
+    }
+    else
+    {
+        directory *d = cwd->search_for_dir(name);
+        if(d != NULL)
+        {
+            d->chmod(val);
+        }
+        else
+        {
+            printf("file/directory does not exist\n");
+        }
+    }
 }
 
 void file_manager::print_cwd_path()
@@ -82,6 +95,15 @@ void file_manager::mkdir(const char *name)
     char *name_with_slash = new char[strlen(name)+2];
     strcpy(name_with_slash, name);
     strcat(name_with_slash, "/");
+    
+    for(int i = 0; i < cwd->get_subdirs().size(); i++)
+    {
+        if(strcmp(name_with_slash, cwd->get_subdirs()[i]->get_name()))
+        {
+            printf("directory already exists\n");
+            return;
+        }
+    }
     
     directory *new_dir = new directory;
     new_dir->set_name(name_with_slash);
@@ -115,6 +137,10 @@ void file_manager::recursive_rm_dir(directory *dir)
 
 void file_manager::rmdir(const char *name)
 {
+    char *name_with_slash = new char[strlen(name)+2];
+    strcpy(name_with_slash, name);
+    strcat(name_with_slash, "/");
+    
     std::vector<directory *> subdirs = cwd->get_subdirs();
     for(int i = 0; i < subdirs.size(); i++)
     {
@@ -128,10 +154,22 @@ void file_manager::rmdir(const char *name)
         }
     }
     cwd->set_links(cwd->get_links()-1);
+    delete[] name_with_slash;
 }
 
 void file_manager::touch(const char *name)
 {
+    // if the file already exists, just update the date
+    for(int i = 0; i < cwd->get_files().size(); i++)
+    {
+        if(strcmp(name, cwd->get_files()[i]->get_name()))
+        {
+            cwd->get_files()[i]->update_file_date();
+            return;
+        }
+    }
+    
+    // create the new file and update the directory link count
     file *new_file = new file;
     new_file->set_name(name);
     cwd->add_file(new_file);
@@ -179,7 +217,7 @@ void file_manager::change_directory(char *dir_name)
     
     if(!found)
     {
-        std::cout << "subdirectory not found" << std::endl;
+        printf("subdirectory not found\n");
     }
 }
 
@@ -202,10 +240,14 @@ void file_manager::split_path(const char *path, std::vector<const char *> &dirs,
 
 bool file_manager::change_directory_search(const char *path)
 {
+    char *path_with_slash = new char[strlen(path)+2];
+    strcpy(path_with_slash, path);
+    strcat(path_with_slash, "/");
+    
     directory *current_dir = cwd;
     std::vector<const char *> dirs;
     std::vector<int> lengths;
-    split_path(path, dirs, lengths);
+    split_path(path_with_slash, dirs, lengths);
     for(int i = 0; i < dirs.size(); i++)
     {
         char *dir_name = new char[lengths[i] + 1];
@@ -215,12 +257,14 @@ bool file_manager::change_directory_search(const char *path)
         if(current_dir == NULL)
         {
             printf("path does not exist\n");
+            delete[] path_with_slash;
             return false;
         }
         delete[] dir_name;
     }
     
     cwd = current_dir;
+    delete[] path_with_slash;
     return true;
 }
 

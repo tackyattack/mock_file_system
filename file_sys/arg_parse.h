@@ -9,5 +9,14 @@
 #ifndef arg_parse_h
 #define arg_parse_h
 
+#include <vector>
+#include "file_mngr.h"
+
+class arg_parser
+{
+public:
+    void parse_arg(const char *arg, file_manager *fm, bool &quit);
+private:
+};
 
 #endif /* arg_parse_h */
