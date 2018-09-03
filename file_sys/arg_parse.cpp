@@ -28,14 +28,15 @@ void arg_parser::parse_arg(const char *arg, file_manager *fm, bool &quit)
     }
     else if(strcmp(cmd, "cd") == 0)
     {
-        if(arg[3] == '.' && arg[4] == '.')
-        {
-            fm->change_to_parent_dir();
-        }
-        else
-        {
-            fm->change_directory_search(arg+3);
-        }
+        fm->change_directory_search(arg+3);
+//        if(arg[3] == '.' && arg[4] == '.')
+//        {
+//            fm->change_to_parent_dir();
+//        }
+//        else
+//        {
+//            fm->change_directory_search(arg+3);
+//        }
     }
     else if(strcmp(cmd, "ls") == 0)
     {

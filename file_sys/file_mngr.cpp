@@ -250,7 +250,10 @@ bool file_manager::change_directory_search(const char *path)
 {
     char *path_with_slash = new char[strlen(path)+2];
     strcpy(path_with_slash, path);
-    strcat(path_with_slash, "/");
+    if(path[strlen(path)-1] != '/')
+    {
+        strcat(path_with_slash, "/");
+    }
     
     directory *current_dir = cwd;
     std::vector<const char *> dirs;
@@ -258,17 +261,24 @@ bool file_manager::change_directory_search(const char *path)
     split_path(path_with_slash, dirs, lengths);
     for(int i = 0; i < dirs.size(); i++)
     {
-        char *dir_name = new char[lengths[i] + 1];
-        strncpy(dir_name, dirs[i], lengths[i]);
-        dir_name[lengths[i]] = '\0';
-        current_dir = current_dir->search_for_dir(dir_name);
-        if(current_dir == NULL)
+        if(strncmp(dirs[i], "..", 2) == 0)
         {
-            printf("path does not exist\n");
-            delete[] path_with_slash;
-            return false;
+            current_dir = current_dir->get_parent_dir();
         }
-        delete[] dir_name;
+        else
+        {
+            char *dir_name = new char[lengths[i] + 1];
+            strncpy(dir_name, dirs[i], lengths[i]);
+            dir_name[lengths[i]] = '\0';
+            current_dir = current_dir->search_for_dir(dir_name);
+            if(current_dir == NULL)
+            {
+                printf("path does not exist\n");
+                delete[] path_with_slash;
+                return false;
+            }
+            delete[] dir_name;
+        }
     }
     
     cwd = current_dir;
