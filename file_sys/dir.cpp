@@ -21,8 +21,11 @@ directory* directory::search_for_dir(const char *name)
 {
     char *name_with_slash = new char[strlen(name)+2];
     strcpy(name_with_slash, name);
-    strcat(name_with_slash, "/");
-    
+    if(name[strlen(name)-1] != '/')
+    {
+        strcat(name_with_slash, "/");
+    }
+
     for(int i = 0; i < subdirs.size(); i++)
     {
         if(strcmp(name_with_slash, subdirs[i]->get_name()) == 0)

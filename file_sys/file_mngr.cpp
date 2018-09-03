@@ -141,19 +141,24 @@ void file_manager::rmdir(const char *name)
     strcpy(name_with_slash, name);
     strcat(name_with_slash, "/");
     
+    bool found = false;
+    
     std::vector<directory *> subdirs = cwd->get_subdirs();
     for(int i = 0; i < subdirs.size(); i++)
     {
-        if(strcmp(subdirs[i]->get_name(), name) == 0)
+        if(strcmp(subdirs[i]->get_name(), name_with_slash) == 0)
         {
             directory *dir = subdirs[i];
             subdirs.erase(subdirs.begin() + i);
             recursive_rm_dir(dir);
             file_obj *f = dir;
             delete f;
+            cwd->set_links(cwd->get_links()-1);
+            found = true;
         }
     }
-    cwd->set_links(cwd->get_links()-1);
+    if(!found) printf("directory does not exist\n");
+    
     delete[] name_with_slash;
 }
 
@@ -178,17 +183,20 @@ void file_manager::touch(const char *name)
 
 void file_manager::rmf(const char *name)
 {
+    bool found = false;
     std::vector<file *> files = cwd->get_files();
     for(int i = 0; i < files.size(); i++)
     {
-        if(strcmp(files[i]->get_name(), name))
+        if(strcmp(files[i]->get_name(), name) == 0)
         {
             file_obj *f = files[i];
             files.erase(files.begin() + i);
             delete f;
+            cwd->set_links(cwd->get_links()-1);
+            found = true;
         }
     }
-    cwd->set_links(cwd->get_links()-1);
+    if(!found) printf("file does not exist\n");
 }
 
 void file_manager::change_to_parent_dir()
@@ -305,8 +313,6 @@ void file_manager::list_cwd(bool long_mode)
     // The long mode indicates that all information should be printed.
     
     std::vector<file_obj *> file_logs;
-    
-    //file_logs.push_back((cwd->get_subdirs())[0]);
     
     for(int i = 0; i < (cwd->get_subdirs()).size(); i++)
     {
