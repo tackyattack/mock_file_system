@@ -10,8 +10,6 @@
 #include <string.h>
 #include "arg_parse.h"
 
-// exit/quit execution should delete file system then flag main somehow to return
-
 void arg_parser::parse_arg(const char *arg, file_manager *fm, bool &quit)
 {    
     // should split each argument based on what the command is
@@ -73,7 +71,7 @@ void arg_parser::parse_arg(const char *arg, file_manager *fm, bool &quit)
     else if(strcmp(cmd, "chmod") == 0)
     {
         char val_str[4] = {0};
-        strncpy(val_str, arg+5, 3);
+        strncpy(val_str, arg+6, 3);
         fm->chmod(arg+10, atoi(val_str));
     }
     else if((strcmp(cmd, "exit") == 0) || (strcmp(cmd, "quit") == 0))

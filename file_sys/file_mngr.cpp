@@ -98,7 +98,7 @@ void file_manager::mkdir(const char *name)
     
     for(int i = 0; i < cwd->get_subdirs().size(); i++)
     {
-        if(strcmp(name_with_slash, cwd->get_subdirs()[i]->get_name()))
+        if(strcmp(name_with_slash, cwd->get_subdirs()[i]->get_name()) == 0)
         {
             printf("directory already exists\n");
             return;
@@ -162,7 +162,7 @@ void file_manager::touch(const char *name)
     // if the file already exists, just update the date
     for(int i = 0; i < cwd->get_files().size(); i++)
     {
-        if(strcmp(name, cwd->get_files()[i]->get_name()))
+        if(strcmp(name, cwd->get_files()[i]->get_name()) == 0)
         {
             cwd->get_files()[i]->update_file_date();
             return;
@@ -271,9 +271,17 @@ bool file_manager::change_directory_search(const char *path)
 void file_manager::insert_alpha_file(file_obj &f, std::vector<file_obj *> &dest)
 {
     // alphabetical insert based on first character
+    
+    if(dest.size() < 1)
+    {
+        // since it is the first one, just insert it
+        dest.push_back(&f);
+        return;
+    }
+    
     std::vector<file_obj *>::iterator it = dest.begin();
     bool found_place = false;
-    for(int i = 0; i < dest.size() && !found_place; i++)
+    for(int i = 0; (i < dest.size()) && !found_place; i++)
     {
         if(f.get_name()[0] <= dest[i]->get_name()[0])
         {
@@ -298,8 +306,9 @@ void file_manager::list_cwd(bool long_mode)
     
     std::vector<file_obj *> file_logs;
     
-    file_logs.push_back((cwd->get_subdirs())[0]);
-    for(int i = 1; i < (cwd->get_subdirs()).size(); i++)
+    //file_logs.push_back((cwd->get_subdirs())[0]);
+    
+    for(int i = 0; i < (cwd->get_subdirs()).size(); i++)
     {
         insert_alpha_file(*(cwd->get_subdirs())[i], file_logs);
     }
