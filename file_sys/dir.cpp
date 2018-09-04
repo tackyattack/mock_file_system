@@ -19,6 +19,7 @@ directory::directory()
 
 directory* directory::search_for_dir(const char *name)
 {
+    // append a '/' if there isn't one
     char *name_with_slash = new char[strlen(name)+2];
     strcpy(name_with_slash, name);
     if(name[strlen(name)-1] != '/')
@@ -26,6 +27,7 @@ directory* directory::search_for_dir(const char *name)
         strcat(name_with_slash, "/");
     }
 
+    // search the subdirectory vector for the given name
     for(int i = 0; i < subdirs.size(); i++)
     {
         if(strcmp(name_with_slash, subdirs[i]->get_name()) == 0)
@@ -64,16 +66,6 @@ void directory::add_subdir(directory *dir)
 {
     dir->parent = this;
     subdirs.push_back(dir);
-    //set_links(get_links() + 1); probably won't work since the
-    // number of links goes all the way down to the last folder
-    // NOPE! nvm, it looks like links are the number of files (dir or actual
-    // files) in a subfolder.
-    // Therefore, maybe then you could call touch on the directory you
-    // are in, which would be here so that the links could be update?
-    // or, actually, maybe the link increase should go in the file
-    // manager. That way, whenever you call mkdir or touch, or rm file,
-    // the link for the current working directory gets updated correctly.
-    // Yeah that's probably how it should work.
 }
 
 void directory::remove_subdir(directory *dir)

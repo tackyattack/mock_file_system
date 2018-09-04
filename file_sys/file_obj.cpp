@@ -136,6 +136,7 @@ void file_obj::set_date(const char *dt)
 
 void file_obj::get_current_date(char *date_out, int sz)
 {
+    // get the current date in string format
     std::time_t t = std::time(0);
     std::tm const* tm = std::localtime(&t);
     strftime(date_out, sz, "%b %d %Y %H:%M", tm);
@@ -143,6 +144,7 @@ void file_obj::get_current_date(char *date_out, int sz)
 
 void file_obj::update_file_date()
 {
+    // update this file's time to now
     char dt[30] = {0};
     get_current_date(dt, 30);
     set_date(dt);
@@ -155,6 +157,8 @@ void file_obj::dec_to_p(char dec, char *out_p)
     
     char p_types[] ={'x','w','r','-'};
     
+    // Check each bit and set the permission string according to the Linux standard
+    // rwx rwx rwx
     for(int i = 0; i < 3; i++)
     {
         if((dec & (0x01<<i)) != 0)
@@ -171,10 +175,11 @@ void file_obj::dec_to_p(char dec, char *out_p)
 
 void file_obj::chmod(int perm)
 {
-    char owner   = perm/100;
-    char group   = (perm - owner*100)/10;
-    char pub     = (perm - owner*100 - group*10);
+    char owner   = perm/100; // first digit
+    char group   = (perm - owner*100)/10; // second digit
+    char pub     = (perm - owner*100 - group*10); // third digit
     
+    // modify each set of three RWX
     dec_to_p(owner, permissions);
     dec_to_p(group, permissions+3);
     dec_to_p(pub, permissions+6);

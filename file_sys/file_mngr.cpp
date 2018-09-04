@@ -11,48 +11,16 @@
 #include <iostream>
 #include "file_mngr.h"
 
-void file_manager::test()
-{
-    
-//    mkdir("x");
-//    cwd->chmod(777);
-//    mkdir("a");
-//    mkdir("y");
-//    mkdir("c");
-//    mkdir("z");
-//    mkdir("c");
-    
-    touch("hello_world");
-    
-    //list_cwd(true);
-    mkdir("home");
-    print_cwd_path();
-    change_directory_search("home/");
-    touch("file_in_home");
-    print_cwd_path();
-    mkdir("henry");
-    change_directory_search("henry/");
-    print_cwd_path();
-    change_to_parent_dir();
-    print_cwd_path();
-    change_to_parent_dir();
-    print_cwd_path();
-    change_to_parent_dir();
-    print_cwd_path();
-    list_cwd(false);
-    
-    rmdir("home/");
-    
-}
-
 file_manager::file_manager()
 {
+    // set the current working directory to the root directory
     root.set_name("/");
     cwd = &root;
 }
 
 void file_manager::chmod(const char *name, int val)
 {
+    // first search to see if a file with the name exists
     file *f = cwd->search_for_file(name);
     if(f != NULL)
     {
@@ -60,6 +28,7 @@ void file_manager::chmod(const char *name, int val)
     }
     else
     {
+        // if no file with the name exists, search for a directory with the name
         directory *d = cwd->search_for_dir(name);
         if(d != NULL)
         {
@@ -76,11 +45,14 @@ void file_manager::print_cwd_path()
 {
     std::vector<char *> path;
     directory *current = cwd;
+    
+    // walk up the parent directories until root is hit
     while(current != NULL)
     {
         path.push_back(current->get_name());
         current = current->get_parent_dir();
     }
+    
     for(long i = path.size()-1; i > -1; i--)
     {
         printf("%s", path[i]);
@@ -92,9 +64,13 @@ void file_manager::mkdir(const char *name)
 {
     // make a new dir (in current working dir) with the given name
     
+    // if the name was passed in without a '/', then append it
     char *name_with_slash = new char[strlen(name)+2];
     strcpy(name_with_slash, name);
-    strcat(name_with_slash, "/");
+    if(name[strlen(name)-1] != '/')
+    {
+        strcat(name_with_slash, "/");
+    }
     
     for(int i = 0; i < cwd->get_subdirs().size(); i++)
     {
@@ -105,10 +81,12 @@ void file_manager::mkdir(const char *name)
         }
     }
     
+    // create the new directory
     directory *new_dir = new directory;
     new_dir->set_name(name_with_slash);
     cwd->add_subdir(new_dir);
     cwd->set_links(cwd->get_links()+1);
+    
     delete[] name_with_slash;
 }
 
@@ -137,12 +115,18 @@ void file_manager::recursive_rm_dir(directory *dir)
 
 void file_manager::rmdir(const char *name)
 {
+    // if the name was passed in without a '/', then append it
     char *name_with_slash = new char[strlen(name)+2];
     strcpy(name_with_slash, name);
-    strcat(name_with_slash, "/");
+    if(name[strlen(name)-1] != '/')
+    {
+        strcat(name_with_slash, "/");
+    }
     
     bool found = false;
     
+    // search the subdirs for the name. If found,
+    // then recursively delete all the conents.
     std::vector<directory *> subdirs = cwd->get_subdirs();
     for(int i = 0; i < subdirs.size(); i++)
     {
@@ -263,7 +247,19 @@ bool file_manager::change_directory_search(const char *path)
     {
         if(strncmp(dirs[i], "..", 2) == 0)
         {
-            current_dir = current_dir->get_parent_dir();
+            // if the current directory is root, don't
+            // try to go past it
+            if(current_dir != &root)
+            {
+                current_dir = current_dir->get_parent_dir();
+            }
+            
+            if(current_dir == NULL)
+            {
+                printf("path does not exist\n");
+                delete[] path_with_slash;
+                return false;
+            }
         }
         else
         {
@@ -271,13 +267,13 @@ bool file_manager::change_directory_search(const char *path)
             strncpy(dir_name, dirs[i], lengths[i]);
             dir_name[lengths[i]] = '\0';
             current_dir = current_dir->search_for_dir(dir_name);
+            delete[] dir_name;
             if(current_dir == NULL)
             {
                 printf("path does not exist\n");
                 delete[] path_with_slash;
                 return false;
             }
-            delete[] dir_name;
         }
     }
     

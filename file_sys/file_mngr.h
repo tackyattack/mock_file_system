@@ -17,7 +17,6 @@ class file_manager
 {
 public:
     file_manager();
-    void test(); // REMOVE
     void chmod(const char *name, int val);
     void mkdir(const char *name);
     void rmdir(const char *name);
