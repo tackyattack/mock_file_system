@@ -14,6 +14,11 @@
 
 file_obj::file_obj()
 {
+    user = NULL;
+    group = NULL;
+    date = NULL;
+    name = NULL;
+    
     links = 1;
     set_byte_size(rand()%50000);
     set_date("Jan 1 00:00");

@@ -16,6 +16,7 @@ void arg_parser::parse_arg(const char *arg, file_manager *fm, bool &quit)
     // for example, cd will split once at the space: cd[space][arg: ".." | "dir name w/ spaces"]
     // chmod will split twice: chmod[space][arg: 777][space][arg: "name"]
     
+    // grab the first argument (should be the command)
     char cmd[10] = {0};
     for(int i = 0; (i < 10) && (arg[i] != ' '); i++)
     {
@@ -36,7 +37,7 @@ void arg_parser::parse_arg(const char *arg, file_manager *fm, bool &quit)
         {
             fm->list_cwd(false);
         }
-        else if(arg[3] == '-' && arg[4] == 'l')
+        else if(arg[3] == '-' && arg[4] == 'l' && strlen(arg) == 5)
         {
             fm->list_cwd(true);
         }

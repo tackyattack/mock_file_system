@@ -36,11 +36,11 @@ private:
     char type;
     char permissions[10];
     int links;
-    char *user = NULL;
-    char *group = NULL;
+    char *user;
+    char *group;
     int byte_size;
-    char *date = NULL;
-    char *name = NULL;
+    char *date;
+    char *name;
     
     void dec_to_p(char dec, char *out_p);
 };

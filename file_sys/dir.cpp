@@ -10,6 +10,7 @@
 
 directory::directory()
 {
+    parent = NULL;
     chmod(777);
     set_type(true);
     set_user("mike");
@@ -62,6 +63,11 @@ std::vector<directory *> directory::get_subdirs()
     return subdirs;
 }
 
+std::vector<directory *>* directory::get_subdirs_ptr()
+{
+    return &subdirs;
+}
+
 void directory::add_subdir(directory *dir)
 {
     dir->parent = this;
@@ -83,6 +89,11 @@ void directory::remove_subdir(directory *dir)
 std::vector<file *> directory::get_files()
 {
     return dir_files;
+}
+
+std::vector<file *>* directory::get_files_ptr()
+{
+    return &dir_files;
 }
 
 void directory::add_file(file *f)

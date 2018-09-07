@@ -92,6 +92,8 @@ void file_manager::mkdir(const char *name)
 
 void file_manager::recursive_rm_dir(directory *dir)
 {
+    // recursively delete all files and folders within the directory
+    
     if(dir->get_subdirs().size() > 0)
     {
         for(int i = 0; i < dir->get_subdirs().size(); i++)
@@ -127,13 +129,13 @@ void file_manager::rmdir(const char *name)
     
     // search the subdirs for the name. If found,
     // then recursively delete all the conents.
-    std::vector<directory *> subdirs = cwd->get_subdirs();
-    for(int i = 0; i < subdirs.size(); i++)
+    std::vector<directory *> *subdirs = cwd->get_subdirs_ptr();
+    for(int i = 0; i < subdirs->size(); i++)
     {
-        if(strcmp(subdirs[i]->get_name(), name_with_slash) == 0)
+        if(strcmp((*subdirs)[i]->get_name(), name_with_slash) == 0)
         {
-            directory *dir = subdirs[i];
-            subdirs.erase(subdirs.begin() + i);
+            directory *dir = (*subdirs)[i];
+            subdirs->erase(subdirs->begin() + i);
             recursive_rm_dir(dir);
             file_obj *f = dir;
             delete f;
@@ -168,13 +170,13 @@ void file_manager::touch(const char *name)
 void file_manager::rmf(const char *name)
 {
     bool found = false;
-    std::vector<file *> files = cwd->get_files();
-    for(int i = 0; i < files.size(); i++)
+    std::vector<file *> *files = cwd->get_files_ptr();
+    for(int i = 0; i < files->size(); i++)
     {
-        if(strcmp(files[i]->get_name(), name) == 0)
+        if(strcmp((*files)[i]->get_name(), name) == 0)
         {
-            file_obj *f = files[i];
-            files.erase(files.begin() + i);
+            file_obj *f = (*files)[i];
+            files->erase(files->begin() + i);
             delete f;
             cwd->set_links(cwd->get_links()-1);
             found = true;
@@ -243,6 +245,9 @@ bool file_manager::change_directory_search(const char *path)
     std::vector<const char *> dirs;
     std::vector<int> lengths;
     split_path(path_with_slash, dirs, lengths);
+    
+    // go through each directory command and determine if
+    // it should go down or up to parent
     for(int i = 0; i < dirs.size(); i++)
     {
         if(strncmp(dirs[i], "..", 2) == 0)
@@ -263,9 +268,12 @@ bool file_manager::change_directory_search(const char *path)
         }
         else
         {
+            // chop off next directory name
             char *dir_name = new char[lengths[i] + 1];
             strncpy(dir_name, dirs[i], lengths[i]);
             dir_name[lengths[i]] = '\0';
+            
+            // search for the name
             current_dir = current_dir->search_for_dir(dir_name);
             delete[] dir_name;
             if(current_dir == NULL)
@@ -293,6 +301,7 @@ void file_manager::insert_alpha_file(file_obj &f, std::vector<file_obj *> &dest)
         return;
     }
     
+    // find where to insert based on first character
     std::vector<file_obj *>::iterator it = dest.begin();
     bool found_place = false;
     for(int i = 0; (i < dest.size()) && !found_place; i++)
@@ -329,6 +338,8 @@ void file_manager::list_cwd(bool long_mode)
         insert_alpha_file(*(cwd->get_files())[i], file_logs);
     }
     
+    // if long mode, print full file log
+    // if short mode, just print the names
     if(!long_mode)
     {
         for(int i = 0; i < file_logs.size(); i++)
