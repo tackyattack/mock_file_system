@@ -26,7 +26,6 @@ file_obj::file_obj()
 
 file_obj::~file_obj()
 {
-    printf("deallocating %s\n", name);
     if(user != NULL) delete[] user;
     if(group != NULL) delete[] group;
     if(date != NULL)delete[] date;
