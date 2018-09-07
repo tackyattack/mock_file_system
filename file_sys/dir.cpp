@@ -6,6 +6,7 @@
 //  Copyright © 2018 HENRY BERGIN. All rights reserved.
 //
 #include <stdio.h>
+#include <string.h>
 #include "dir.h"
 
 directory::directory()

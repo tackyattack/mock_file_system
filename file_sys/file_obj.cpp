@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <iostream>
+#include <time.h>
 #include "file_obj.h"
 
 file_obj::file_obj()
@@ -141,8 +142,8 @@ void file_obj::set_date(const char *dt)
 void file_obj::get_current_date(char *date_out, int sz)
 {
     // get the current date in string format
-    std::time_t t = std::time(0);
-    std::tm const* tm = std::localtime(&t);
+    time_t t = time(0);
+    tm const* tm = localtime(&t);
     strftime(date_out, sz, "%b %d %Y %H:%M", tm);
 }
 
