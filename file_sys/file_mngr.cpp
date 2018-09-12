@@ -18,6 +18,11 @@ file_manager::file_manager()
     cwd = &root;
 }
 
+file_manager::~file_manager()
+{
+    recursive_rm_dir(&root);
+}
+
 void file_manager::chmod(const char *name, int val)
 {
     // first search to see if a file with the name exists
